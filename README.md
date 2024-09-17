@@ -25,3 +25,5 @@
 
    ```bash
    git clone https://github.com/Neerajjv/True-Source.git
+   ```Navigate to the Project Directory:
+   git clone https://github.com/Neerajjv/True-Source.git
