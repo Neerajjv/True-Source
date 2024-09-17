@@ -31,18 +31,33 @@
 3. **Install Dependencies:**
    ```bash
    pip install -r requirements.txt
-3. **Configure Google CSE:
+4. **Configure Google CSE:
 
-Go to the Google Custom Search Engine (CSE) and create a new search engine.
+   Go to the Google Custom Search Engine (CSE) and create a new search engine.
 
-Obtain your API key and search engine ID.
+   Obtain your API key and search engine ID.
 
-Add these credentials to the .env file:**
+   Add these credentials to the .env file:**
    ```bash
    {
-  "api_key": "YOUR_API_KEY",
-  "search_engine_id": "YOUR_SEARCH_ENGINE_ID"
-}
+   "api_key": "YOUR_API_KEY",
+   "search_engine_id": "YOUR_SEARCH_ENGINE_ID"
+    }
+4. **Configure Google CSE:
 
+   Go to the Google Custom Search Engine (CSE) and create a new search engine.
+
+   Obtain your API key and search engine ID.
+
+   Add these credentials to the .env file:**
+   ```bash
+   {
+   "api_key": "YOUR_API_KEY",
+   "search_engine_id": "YOUR_SEARCH_ENGINE_ID"
+    }
+  **USAGE :**
+  ```bash
+        python main.py
+        python pdf.py
 
 
