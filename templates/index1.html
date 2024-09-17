@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #0000006d;
+            color: #C3D900;
+            padding: 15px 20px;
+            font-size: 30px;
+            text-align: center;
+            z-index: 1;
+            position: relative;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        form {
+            background-color: #2f2f2f;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            background-color: #5b5a5a55;
+            border: 1px solid #000000;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 16px;
+        }
+input[type="file"] {
+    padding: 16px 33px;
+    border-radius: 9px;
+    background: #d5f365;
+    border: none;
+    font-family: inherit;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.4s;
+    color: #000080;
+    font-size: 16px;
+}
+        button {
+            padding: 16px 33px;
+            border-radius: 9px;
+            background: #d5f365;
+            border: none;
+            font-family: inherit;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.4s;
+            color: #000080;
+            font-size: 16px;
+        }
+
+        button:hover {
+            box-shadow: 7px 5px 56px -14px #C3D900;
+        }
+
+        button:active {
+            transform: scale(0.97);
+            box-shadow: 7px 5px 56px -10px #C3D900;
+        }
+
+        .result-container {
+            background-color: #2f2f2f;
+            color: #C3D900;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .result-section {
+            margin-bottom: 30px;
+        }
+
+        .result-section strong {
+            color: #d5f365;
+            font-size: 20px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .result-section span {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #C3D900;
+        }
+
+        ul#plagiarized-sites {
+            padding-left: 20px;
+            list-style-type: none;
+            margin: 0;
+        }
+
+        ul#plagiarized-sites li {
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+            font-size: 16px;
+            color: #C3D900;
+        }
+
+        ul#plagiarized-sites li a {
+            color: #d5f365;
+            text-decoration: none;
+        }
+
+        ul#plagiarized-sites li a:hover {
+            text-decoration: underline;
+        }
+
+        .pagination-controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination-controls button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            background-color: #d5f365;
+            color: #000080;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .pagination-controls button:hover {
+            background-color: #C3D900;
+            color: #000;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #C3D900;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .sidebar .close-btn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="hamburger" onclick="toggleSidebar()">☰</div>
+        <h1>Document Analysis</h1>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">×</a>
+        <a href="#upload">Upload PDF</a>
+        <a href="#about-us">About Us</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <div class="container">
+        <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".pdf" required>
+            <button type="submit" onclick="displayResults()">Upload PDF</button>
+        </form>
+
+        <div class="result-container hidden" id="result-container">
+            <div id="result-section" class="result-section">
+                <strong>Plagiarism Score:</strong>
+                <span id="plagiarism-score">0%</span>
+                <div>
+                    <strong>Plagiarized Sites:</strong>
+                    <ul id="plagiarized-sites"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination-controls">
+            <button id="prev-page" onclick="changePage(-1)">Previous</button>
+            <button id="next-page" onclick="changePage(1)">Next</button>
+            <div id="page-info"></div>
+        </div>
+
+        <div id="about-us">
+            <h2>About Us</h2>
+            <p>We are committed to providing the best document analysis services. Our tools help you analyze your documents efficiently and effectively.</p>
+            <ul>
+                <li>High-quality analysis</li>
+                <li>Easy to use</li>
+                <li>24/7 support</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let matches = [];
+        let currentPage = 1;
+        const resultsPerPage = 3;
+
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            if (sidebar.style.width === '250px') {
+                sidebar.style.width = '0';
+            } else {
+                sidebar.style.width = '250px';
+            }
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').style.width = '0';
+        }
+
+        document.getElementById('upload-form').onsubmit = function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                matches = data.matches;
+                document.getElementById('result-section').classList.remove('hidden');
+                document.getElementById('plagiarism-score').textContent = `${data.plagiarism_score}%`;
+                displayResults();
+                document.getElementById('result-container').classList.remove('hidden');
+            })
+            .catch(error => console.error('Error:', error));
+        };
+
+        function displayResults() {
+            const resultsList = document.getElementById('plagiarized-sites');
+            resultsList.innerHTML = '';
+
+            const startIndex = (currentPage - 1) * resultsPerPage;
+            const endIndex = Math.min(startIndex + resultsPerPage, matches.length);
+            const paginatedMatches = matches.slice(startIndex, endIndex);
+
+            paginatedMatches.forEach(match => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<a href="${match.matched_url}" target="_blank">${match.matched_url}</a> - Similarity Score: ${match.similarity_score.toFixed(2)}%`;
+                resultsList.appendChild(listItem);
+            });
+
+            document.getElementById('prev-page').style.display = (currentPage > 1) ? 'inline' : 'none';
+            document.getElementById('next-page').style.display = (endIndex < matches.length) ? 'inline' : 'none';
+            document.getElementById('page-info').innerText = `Page ${currentPage} of ${Math.ceil(matches.length / resultsPerPage)}`;
+            document.getElementById('pagination-controls').style.display = matches.length > resultsPerPage ? 'block' : 'none';
+        }
+
+        function changePage(direction) {
+            const totalPages = Math.ceil(matches.length / resultsPerPage);
+            currentPage = Math.max(1, Math.min(totalPages, currentPage + direction));
+            displayResults();
+        }
+    </script>
+</body>
+</html>
